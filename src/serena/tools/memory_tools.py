@@ -47,7 +47,7 @@ class ListMemoriesTool(Tool):
         """
         List available memories. Any memory can be read using the `read_memory` tool.
         """
-        return json.dumps(self.memories_manager.list_memories())
+        return json.dumps(self.memories_manager.list_memories(), ensure_ascii=False)
 
 
 class DeleteMemoryTool(Tool):
