@@ -79,7 +79,7 @@ class CreateTextFileTool(Tool, ToolMarkerCanEdit):
         answer = f"File created: {relative_path}."
         if will_overwrite_existing:
             answer += " Overwrote existing file."
-        return json.dumps(answer)
+        return json.dumps(answer, ensure_ascii=False)
 
 
 class ListDirTool(Tool):
@@ -106,7 +106,7 @@ class ListDirTool(Tool):
                 "project_root": self.get_project_root(),
                 "hint": "Check if the path is correct relative to the project root",
             }
-            return json.dumps(error_info)
+            return json.dumps(error_info, ensure_ascii=False)
 
         self.project.validate_relative_path(relative_path)
 
@@ -118,7 +118,7 @@ class ListDirTool(Tool):
             is_ignored_file=self.project.is_ignored_path if skip_ignored_files else None,
         )
 
-        result = json.dumps({"dirs": dirs, "files": files})
+        result = json.dumps({"dirs": dirs, "files": files}, ensure_ascii=False)
         return self._limit_length(result, max_answer_chars)
 
 
@@ -154,7 +154,7 @@ class FindFileTool(Tool):
             relative_to=self.get_project_root(),
         )
 
-        result = json.dumps({"files": files})
+        result = json.dumps({"files": files}, ensure_ascii=False)
         return result
 
 
@@ -400,5 +400,5 @@ class SearchForPatternTool(Tool):
         for match in matches:
             assert match.source_file_path is not None
             file_to_matches[match.source_file_path].append(match.to_display_string())
-        result = json.dumps(file_to_matches)
+        result = json.dumps(file_to_matches, ensure_ascii=False)
         return self._limit_length(result, max_answer_chars)
